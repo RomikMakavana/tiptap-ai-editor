@@ -11,6 +11,8 @@ const config: Config = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        'dark-gray' : '#44403c',
+        'periwinkle-blue' : '#6366f1'
       },
     },
   },
