@@ -1,22 +1,41 @@
-import { act, useState } from 'react';
+import { useState } from 'react';
 import { DropdownButton } from '@/components/ui/Dropdown';
 import { Icon } from '@/components/ui/Icon';
 import { Surface } from '@/components/ui/Surface';
 import { Toolbar } from '@/components/ui/Toolbar';
+import { icons } from 'lucide-react';
+
+interface ButtonOption {
+  label: string;
+  icon?: keyof typeof icons;
+  action?: () => void;
+  options?: ButtonOption[];
+}
+
+interface AiButton {
+  name: string;
+  icon: keyof typeof icons;
+  options?: ButtonOption[];
+}
+
+interface AiButtonGroup {
+  label: string;
+  buttons: AiButton[];
+}
 
 export const AIDropdown = () => {
   const [openCustomePromt, setOpenCustomePromt] = useState<boolean>(false);
-  const [selectedOptions, setSelectedOptions] = useState<any[]>([]);
+  const [selectedOptions, setSelectedOptions] = useState<ButtonOption[]>([]);
   const [modifyFurtherModel, setModifyFurtherModel] = useState<boolean>(false);
   const openCustomePromtHandler = () => {
     setOpenCustomePromt(true);
   };
 
-  const showOptions = (options: any[]) => {
+  const showOptions = (options: ButtonOption[]) => {
     setSelectedOptions(options);
   };
 
-  const AiButtons = [
+  const AiButtons: AiButtonGroup[] = [
     {
       label: 'Modify writing',
       buttons: [
@@ -197,7 +216,7 @@ export const AIDropdown = () => {
     }
   ];
 
-  const modifyFurther = [
+  const modifyFurther: AiButtonGroup[] = [
     {
       label: 'Modify further',
       buttons: [
@@ -216,10 +235,6 @@ export const AIDropdown = () => {
       ]
     },
   ]
-
-  const replaceSelectionHandler = () => {
-
-  }
 
   return (
     <div className="flex flex-col gap-3">

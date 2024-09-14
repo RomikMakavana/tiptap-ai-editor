@@ -1,16 +1,8 @@
-import { posToDOMRect, useCurrentEditor, BubbleMenu } from "@tiptap/react";
-import { Icon } from '@/components/ui/Icon';
-import React, { useState } from "react";
-import { motion } from "framer-motion";
+// import { posToDOMRect, useCurrentEditor, BubbleMenu } from "@tiptap/react";
+import { useCurrentEditor, BubbleMenu } from "@tiptap/react";
+import React from "react";
 import { SelectionContext } from "@/types";
-
-import { Popup } from "./Popup";
-import { Suggestions } from "./Suggestions";
 import { AIDropdown } from "../AIDropdown";
-import { useTextmenuCommands } from "../useTextmenuCommands";
-import { Toolbar } from "../ui/Toolbar";
-import { Surface } from "../ui/Surface";
-// import { Suggestions } from "./Suggestions";
 
 interface MenuProps {
   suggestions: string[];
@@ -18,47 +10,42 @@ interface MenuProps {
   status: "idle" | "fetching" | "done";
 }
 
-export const Menu = ({ suggestions, context, status }: MenuProps) => {
+export const Menu = ({ status }: MenuProps) => {
   const { editor } = useCurrentEditor();
 
-  const lastRect = React.useRef<DOMRect | null>(null);
-  const [popupOpen, setPopupOpen] = useState<boolean>(false);
-  const [openCustomePromt, setOpenCustomePromt] = useState<boolean>(false);
-  const rect = React.useMemo(() => {
-    if (!editor || status === "done") {
-      return lastRect.current;
-    }
+  // const lastRect = React.useRef<DOMRect | null>(null);
+  const popupOpen: boolean = false;
+  // const rect = React.useMemo(() => {
+  //   if (!editor || status === "done") {
+  //     return lastRect.current;
+  //   }
 
-    const rect = posToDOMRect(
-      editor.view,
-      editor.state.selection.from,
-      editor.state.selection.to,
-    );
+  //   const rect = posToDOMRect(
+  //     editor.view,
+  //     editor.state.selection.from,
+  //     editor.state.selection.to,
+  //   );
 
-    const editorRect = editor.view.dom.getBoundingClientRect();
+  //   const editorRect = editor.view.dom.getBoundingClientRect();
 
-    rect.y -= editorRect.y;
-    rect.x -= editorRect.x;
+  //   rect.y -= editorRect.y;
+  //   rect.x -= editorRect.x;
 
-    lastRect.current = rect;
+  //   lastRect.current = rect;
 
-    return rect;
-  }, [
-    status,
-    editor?.view,
-    editor?.state.selection.from,
-    editor?.state.selection.to,
-  ]);
+  //   return rect;
+  // }, [
+  //   status,
+  //   editor?.view,
+  //   editor?.state.selection.from,
+  //   editor?.state.selection.to,
+  // ]);
 
   if (!editor || editor.isDestroyed) {
     return null;
   }
   console.log('[status]', status);
   console.log('[popupOpen]', popupOpen);
-  const commands = useTextmenuCommands(editor)
-  const openCustomePromtHandler = () => {
-    setOpenCustomePromt(true)
-  }
   return (
     // <Popup rect={rect} visible={status !== "idle"}>
     //   <div className="flex flex-col gap-2">
@@ -94,17 +81,7 @@ export const Menu = ({ suggestions, context, status }: MenuProps) => {
       pluginKey="textMenu"
       updateDelay={100}
     >
-     <AIDropdown 
-      onCompleteSentence={commands.onCompleteSentence}
-      onEmojify={commands.onEmojify}
-      onFixSpelling={commands.onFixSpelling}
-      onMakeLonger={commands.onMakeLonger}
-      onMakeShorter={commands.onMakeShorter}
-      onSimplify={commands.onSimplify}
-      onTldr={commands.onTldr}
-      openCustomePromtHandler={openCustomePromtHandler}
-      openCustomePromt={openCustomePromt}
-     />
+     <AIDropdown/>
     </BubbleMenu>
   );
 };
